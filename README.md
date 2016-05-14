@@ -16,7 +16,23 @@
 
     sudo gem install bundler
 
+# SNMP
 
+    sudo apt-get install snmp snmpd snmp-mibs-downloader
+    
+    sudo vim /etc/snmp/snmpd.conf
+    # agentAddress  161
+    # rocommunity public
+    sudo /etc/init.d/snmpd restart
+    
+    
+# NTP
+
+    sudo vim /etc/ntp.conf
+    # server 192.168.201.186 iburst
+    sudo /etc/init.d/ntp restart
+    
+    
 
     sudo apt-get install postgresql postgresql-contrib libpq-dev
 
