@@ -1,7 +1,11 @@
+# First Things
+
     sudo apt-get update
     mkdir installs
     cd installs
     sudo apt-get install git wget vim
+
+# Ruby
 
     wget https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.1.tar.gz
     tar -zxvf ruby-2.3.1.tar.gz
@@ -32,7 +36,8 @@
     # server 192.168.201.186 iburst
     sudo /etc/init.d/ntp restart
     
-    
+
+# Other
 
     sudo apt-get install postgresql postgresql-contrib libpq-dev
 
