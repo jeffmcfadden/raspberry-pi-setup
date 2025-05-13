@@ -1,89 +1,56 @@
 # First Things
 
-    sudo apt-get update
+    sudo apt update
+    sudo apt upgrade
     mkdir installs
     cd installs
-    sudo apt-get install git wget vim
+    sudo apt install git wget vim
+
+# SSH Setup
+
+## Copy Key
+    ssh-copy-id pi@<raspberry_pi_ip>
+
+## Update config
+    HOST [raspberry_pi_host_or_ip]
+    User pi
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/[key_file]
+
+## Test
+    ssh [raspberry_pi_host_or_ip]
 
 # Ruby
 
-    wget https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.1.tar.gz
-    tar -zxvf ruby-2.3.1.tar.gz
-    cd ruby-2.3.1
-    sudo apt-get install autoconf gcc g++ make bison libyaml-dev libssl-dev libffi-dev zlib1g-dev libxslt-dev libxml2-dev libpq-dev zip libreadline-dev
+## Update and install basic build tools
+    sudo apt update
+    sudo apt install -y \
+    autoconf \
+    bison \
+    build-essential \
+    libssl-dev \
+    libyaml-dev \
+    libreadline6-dev \
+    zlib1g-dev \
+    libncurses5-dev \
+    libffi-dev \
+    libgdbm6 \
+    libgdbm-dev \
+    libdb-dev \
+    libjemalloc-dev \
+    git \
+    curl
 
-     # RPi B+ ONLY:
-    ./configure --disable-install-doc && make clean && make && sudo make install
+## Install rustup (for YJIT)
+    curl https://sh.rustup.rs -sSf | sh -s -- -y
+    source $HOME/.cargo/env
 
-    # RPi 2+ ONLY:
-    ./configure --disable-install-doc && make clean && make -j4 && sudo make install
+## Download source & Install
 
-    sudo gem install bundler
-
-# SNMP
-
-    sudo apt-get install snmp snmpd snmp-mibs-downloader
-    
-    sudo vim /etc/snmp/snmpd.conf
-    # agentAddress  161
-    # rocommunity public
-    sudo /etc/init.d/snmpd restart
-    
-    
-# NTP
-
-    sudo vim /etc/ntp.conf
-    # server 192.168.201.186 iburst
-    sudo /etc/init.d/ntp restart
-    
-
-# Other
-
-    sudo apt-get install postgresql postgresql-contrib libpq-dev
-
-    sudo -i -u postgres
-    createuser -s -P rails #set password
-    exit
-
-    sudo vim /etc/postgresql/9.4/main/pg_hba.conf
-
-    # change this: # "local" is for Unix domain socket connections only
-
-    sudo service postgresql restart
-
-    sudo apt-get install nginx
-
-    sudo apt-get install upstart
-
-    # Restart
-    sudo shutdown -r now
-
-    # Set motd
-    sudo vim /etc/motd
-
-    # Set hostname
-    sudo vim /etc/hostname # Reboot afterward to take effect
-
-
-
-
-    cd installs
-    mkdir node
-    cd node
-    wget https://nodejs.org/dist/v4.2.4/node-v4.2.4-linux-armv7l.tar.gz
-    tar -zxvf node-v4.2.4-linux-armv7l.tar.gz
-    cd node-v4.2.4-linux-armv7l
-    sudo cp -R * /usr/local/
-    sudo apt-get install libavahi-compat-libdnssd-dev
-
-
-    #REDIS
-
-    sudo apt-get install redis-server
-    # Do this: #See: https://gist.github.com/bdotdub/714533
-    sudo start redis-server
-
-    # uPNP manager
-    sudo apt-get install miniupnpc
-
-
+    wget https://cache.ruby-lang.org/pub/ruby/3.4/ruby-3.4.3.tar.gz
+    tar -zxvf ruby-3.4.3.tar.gz
+    cd ruby-3.4.3
+    ./configure --enable-yjit --with-jemalloc
+    make -j$(nproc)
+    sudo make install
+    sudo chown -R $(whoami):$(whoami) /usr/local/lib/ruby/gems/3.4.0
